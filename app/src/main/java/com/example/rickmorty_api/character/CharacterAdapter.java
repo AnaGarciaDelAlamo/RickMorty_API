@@ -40,21 +40,11 @@ public class CharacterAdapter extends RecyclerView.Adapter<CharacterViewHolder> 
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), CharacterDetailActivity.class);
-                intent.putExtra("character_id", character.getId());
-                intent.putExtra("character_name", character.getName());
-                intent.putExtra("character_status", character.getStatus());
-                intent.putExtra("character_image", character.getImage());
-                intent.putExtra("character_species", character.getSpecies());
-                intent.putExtra("character_type", character.getType());
-                intent.putExtra("character_gender", character.getGender());
-                intent.putExtra("character_origin", character.getOrigin().getName());
-                intent.putExtra("character_location", character.getLocation().getName());
-                //intent.putExtra("characeter_episode", character.;
-
-
+                intent.putExtra("character", character); // Pasa el objeto Character en la intención
                 view.getContext().startActivity(intent);
             }
         });
+
     }
 
     @Override

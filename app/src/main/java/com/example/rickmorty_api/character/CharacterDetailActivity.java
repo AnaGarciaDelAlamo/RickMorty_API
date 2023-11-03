@@ -2,89 +2,54 @@ package com.example.rickmorty_api.character;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.rickmorty_api.R;
-import com.example.rickmorty_api.SQL.CharacterDAO;
-import com.example.rickmorty_api.SQL.FavoriteCharactersActivity;
-
-import java.util.List;
 
 public class CharacterDetailActivity extends AppCompatActivity {
+    private WebView detailWebView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_character_detail);
 
-        int characterId = getIntent().getIntExtra("character_id", 0);
-        String characterName = getIntent().getStringExtra("character_name");
-        String characterStatus = getIntent().getStringExtra("character_status");
-        String characterSpecies = getIntent().getStringExtra("character_species");
-        String characterType = getIntent().getStringExtra("character_type");
-        String characterGender = getIntent().getStringExtra("character_gender");
-        String characterOrigin = getIntent().getStringExtra("character_origin");
-        String characterLocation = getIntent().getStringExtra("character_location");
-        //String characterEpisode = getIntent().getStringExtra("character_episode");
+        detailWebView = findViewById(R.id.webview);
+        WebSettings webSettings = detailWebView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
 
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra("character")) {
+            Character character = (Character) intent.getSerializableExtra("character");
 
-
-        TextView nameTextView = findViewById(R.id.nameTextView);
-        TextView statusTextView = findViewById(R.id.statusTextView);
-        TextView speciesTextView = findViewById(R.id.speciesTextView);
-        TextView typeTextView = findViewById(R.id.typeTextView);
-        TextView genderTextView = findViewById(R.id.genderTextView);
-        TextView originTextView = findViewById(R.id.originTextView);
-        TextView locationTextView = findViewById(R.id.locationTextView);
-        //TextView episodeTextView = findViewById(R.id.episodeTextView);
-
-        nameTextView.setText("Name: " + characterName);
-        statusTextView.setText("Status: " + characterStatus);
-        speciesTextView.setText("Species: " + characterSpecies);
-        typeTextView.setText("Type: " + characterType);
-        genderTextView.setText("Gender: " + characterGender);
-        originTextView.setText("Origin: " + characterOrigin);
-        locationTextView.setText("Location: " + characterLocation);
-        //episodeTextView.setText("Primera aparición: " + characterEpisode);
-
-
-        Button addToFavoritesButton = findViewById(R.id.botonFav);
-        addToFavoritesButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Obtener el nombre del personaje
-                String characterName = getIntent().getStringExtra("character_name");
-
-                // Llamar al método para agregar el personaje a favoritos
-                CharacterDAO characterDAO = new CharacterDAO(view.getContext());
-                characterDAO.open();
-                long result = characterDAO.addFavoriteCharacter(characterName);
-                characterDAO.close();
-
-                if (result != -1) {
-                    Toast.makeText(view.getContext(), "Agregado a favoritos", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(view.getContext(), "Error al agregar a favoritos", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        Button verfavoritos = findViewById(R.id.btnVerFav);
-        verfavoritos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(CharacterDetailActivity.this, FavoriteCharactersActivity.class);
-                startActivity(intent);
-            }
-        });
-
-
+            String htmlData = generateCharacterDetailsHTML(character);
+            detailWebView.loadDataWithBaseURL(null, htmlData, "text/html", "UTF-8", null);
+        }
     }
+
+    private String generateCharacterDetailsHTML(Character character) {
+        String htmlData = "<html><body>";
+        htmlData += "<h1>" + character.getName() + "</h1>";
+        htmlData += "<img src='" + character.getImage() + "' />";
+        htmlData += "<p><strong>Status:</strong> " + character.getStatus() + "</p>";
+        htmlData += "<p><strong>Species:</strong> " + character.getSpecies() + "</p>";
+        htmlData += "<p><strong>Gender:</strong> " + character.getGender() + "</p>";
+        htmlData += "<p><strong>Type:</strong> " + character.getType() + "</p>";
+        htmlData += "<p><strong>Location:</strong> " + character.getLocation().getName() + "</p>";
+
+        // Lista de episodios, suponiendo que Episode tiene un método getName()
+        // Si tienes los nombres de episodios, puedes reemplazar la URL con esos nombres.
+        htmlData += "<p><strong>Episodes:</strong></p><ul>";
+    /*for (String episodeUrl : character.getEpisode()) {
+        htmlData += "<li>" + episodeUrl + "</li>"; // Deberías cambiar esto por los nombres de los episodios si están disponibles
+    }*/
+        htmlData += "</ul>";
+        htmlData += "</body></html>";
+        return htmlData;
+    }
+
 }
-
-
