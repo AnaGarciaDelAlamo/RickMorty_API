@@ -10,22 +10,22 @@
         android:id="@+id/webview"
         android:layout_width="333dp"
         android:layout_height="540dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintVertical_bias="0.5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.13"
         tools:ignore="MissingConstraints" />
 
     <ImageButton
-        android:id="@+id/btnFavorito"
+        android:id="@+id/btnAddToFavorites"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_marginStart="52dp"
         android:layout_marginTop="60dp"
         android:scaleType="center"
         android:src="@drawable/favorito"
+        android:onClick="addToFavorites"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/webview"
         tools:ignore="MissingConstraints" />
