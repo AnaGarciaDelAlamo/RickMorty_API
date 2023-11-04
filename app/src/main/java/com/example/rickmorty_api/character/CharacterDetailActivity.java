@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.rickmorty_api.R;
 import com.example.rickmorty_api.SQL.CharacterDatabaseHelper;
+import com.example.rickmorty_api.SQL.FavoritesActivity;
 
 public class CharacterDetailActivity extends AppCompatActivity {
 
@@ -51,11 +52,11 @@ public class CharacterDetailActivity extends AppCompatActivity {
         if (isFavorite) {
             removeFromFavorites(character.getName());
             isFavorite = false;
-            Toast.makeText(this, "Removed from Favorites", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Eliminado de favoritos", Toast.LENGTH_SHORT).show();
         } else {
             addToFavorites(character.getName());
             isFavorite = true;
-            Toast.makeText(this, "Added to Favorites", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Añadido a favoritos", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -90,6 +91,11 @@ public class CharacterDetailActivity extends AppCompatActivity {
     }
 
 
+
+
+
+
+
     //Elementos webView
     private String generateCharacterDetailsHTML(Character character) {
         String htmlData = "<html><body>";
@@ -105,6 +111,11 @@ public class CharacterDetailActivity extends AppCompatActivity {
         htmlData += "<p><strong>Episodes:</strong></p><ul>" + character.getEpisode().get(0);
         htmlData += "</div>";
         return htmlData;
+    }
+
+    public void showFavorites(View view) {
+        Intent intent = new Intent(this, FavoritesActivity.class);
+        startActivity(intent);
     }
 
 }

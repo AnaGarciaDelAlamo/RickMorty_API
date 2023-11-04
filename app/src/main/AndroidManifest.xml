@@ -27,6 +27,10 @@
         </activity>
         <activity android:name=".character.CharacterDetailActivity">
         </activity>
+        <activity
+        android:name=".SQL.FavoritesActivity"
+        android:label="Favorites">
+    </activity>
 
     </application>
 

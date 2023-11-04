@@ -74,4 +74,36 @@ public class Character implements Serializable {
     public Origin getOrigin() {
         return origin;
     }
+
+    public void setOrigin(Origin origin) {
+        this.origin = origin;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public void setSpecies(String species) {
+        this.species = species;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
 }

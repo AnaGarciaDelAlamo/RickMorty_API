@@ -40,7 +40,7 @@ public class CharacterAdapter extends RecyclerView.Adapter<CharacterViewHolder> 
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), CharacterDetailActivity.class);
-                intent.putExtra("character", character); // Pasa el objeto Character en la intención
+                intent.putExtra("character", character);
                 view.getContext().startActivity(intent);
             }
         });

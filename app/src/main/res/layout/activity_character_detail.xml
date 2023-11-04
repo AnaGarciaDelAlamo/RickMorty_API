@@ -21,12 +21,23 @@
         android:id="@+id/btnAddToFavorites"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="52dp"
+        android:onClick="addToFavorites"
         android:scaleType="center"
         android:src="@drawable/favorito"
-        android:onClick="addToFavorites"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/webview"
         tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/btnShowFavorites"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="52dp"
+        android:layout_marginBottom="56dp"
+        android:onClick="showFavorites"
+        android:text="Show Favorites"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

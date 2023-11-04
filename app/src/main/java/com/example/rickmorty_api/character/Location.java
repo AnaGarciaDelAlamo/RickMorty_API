@@ -8,7 +8,7 @@ public class Location implements Serializable {
     private String name;
     private String url;
 
-    public Location(String name, String url) {
+    public Location() {
         this.name = name;
         this.url = url;
     }
@@ -25,4 +25,11 @@ public class Location implements Serializable {
         return url;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 }
