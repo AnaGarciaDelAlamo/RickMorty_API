@@ -14,9 +14,16 @@ import java.util.List;
 
 public class CharacterAdapter extends RecyclerView.Adapter<CharacterViewHolder> {
     private List<Character> characterList;
+    Character characters;
 
     public CharacterAdapter(List<Character> characterList) {
         this.characterList = characterList;
+    }
+
+    //Spinner
+    public void setCharacters(List<Character> characters) {
+        this.characterList = characters;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -51,4 +58,6 @@ public class CharacterAdapter extends RecyclerView.Adapter<CharacterViewHolder> 
     public int getItemCount() {
         return characterList.size();
     }
+
+
 }

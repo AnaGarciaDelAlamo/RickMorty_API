@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">RickMorty_API</string>
+    <string-array name="species_array">
+        <item>All</item>
+        <item>Human</item>
+        <item>Alien</item>
+        <item>Robot</item>
+        <item>Vampire</item>
+    </string-array>
 </resources>
