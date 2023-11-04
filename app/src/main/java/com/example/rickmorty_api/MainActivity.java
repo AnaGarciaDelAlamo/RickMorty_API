@@ -10,10 +10,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.rickmorty_api.character.Character;
 import com.example.rickmorty_api.character.CharacterAdapter;
-
 import java.util.ArrayList;
 import java.util.List;
 import retrofit2.Call;
@@ -29,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private List<Character> characterList;
     private Spinner spinner;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,26 +37,30 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         characterList = new ArrayList<>();
         characterAdapter = new CharacterAdapter(characterList);
-
         recyclerView.setAdapter(characterAdapter);
 
-        //Spinner
+        // Spinner
         spinner = findViewById(R.id.spinnerCategory);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(characterAdapter);
 
-        ArrayAdapter<CharSequence> speciesAdapter = ArrayAdapter.createFromResource(this, R.array.species_array, android.R.layout.simple_spinner_item);
-        speciesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(speciesAdapter);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.species_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
+        spinner.setSelection(adapter.getPosition("Ninguno"));
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                String selectedSpecies = speciesAdapter.getItem(position).toString();
+                String selectedSpecies = spinner.getSelectedItem().toString();
                 filterCharactersBySpecies(selectedSpecies);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
-                // No es necesario implementar nada aquí
+                spinner.setSelection(adapter.getPosition("Ninguno"));
             }
         });
 
@@ -86,16 +89,19 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void filterCharactersBySpecies(String selectedSpecies) {
+    private void filterCharactersBySpecies(String species) {
         List<Character> filteredCharacters = new ArrayList<>();
-        for (Character character : characterList) {
-            if (character.getSpecies().equals(selectedSpecies)) {
-                filteredCharacters.add(character);
+
+        if ("Todos".equals(species)) {
+            filteredCharacters.addAll(characterList);
+        } else {
+            for (Character character : characterList) {
+                if (character.getSpecies().equals(species)) {
+                    filteredCharacters.add(character);
+                }
             }
         }
+
         characterAdapter.setCharacters(filteredCharacters);
-        characterAdapter.notifyDataSetChanged();
     }
-
-
 }
