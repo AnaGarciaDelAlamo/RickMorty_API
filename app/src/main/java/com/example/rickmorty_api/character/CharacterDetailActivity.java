@@ -134,10 +134,33 @@ public class CharacterDetailActivity extends AppCompatActivity {
         htmlData += "<p><strong>Type:</strong> " + character.getType() + "</p>";
         htmlData += "<p><strong>Location:</strong> " + character.getLocation().getName() + "</p>";
         htmlData += "<p><strong>Origin:</strong> " + character.getOrigin().getName() + "</p>";
-        htmlData += "<p><strong>Episodes:</strong></p><ul>" + character.getEpisode().get(0);
+
+        // Verifica si la lista de episodios tiene al menos un episodio
+        if (character.getEpisode() != null && !character.getEpisode().isEmpty()) {
+            // Obtiene la URL del primer episodio
+            String firstEpisodeUrl = character.getEpisode().get(0);
+            // Extrae el nombre del episodio de la URL
+            String firstEpisodeName = extractEpisodeNameFromUrl(firstEpisodeUrl);
+            htmlData += "<p><strong>First Episode:</strong> " + firstEpisodeName + "</p>";
+        }
+
         htmlData += "</div>";
         return htmlData;
     }
+
+    // Función para extraer el nombre del episodio desde su URL
+    private String extractEpisodeNameFromUrl(String episodeUrl) {
+        // Supongamos que la URL tiene el formato "https://rickandmortyapi.com/api/episode/1"
+        // Puedes extraer el número de episodio del final de la URL y asignar un nombre en función de ese número
+        String[] parts = episodeUrl.split("/");
+        if (parts.length > 0) {
+            String episodeNumber = parts[parts.length - 1];
+            return "Episode " + episodeNumber;
+        }
+        return "Unknown Episode";
+    }
+
+
 
     public void showFavorites(View view) {
         Intent intent = new Intent(this, FavoritesActivity.class);
