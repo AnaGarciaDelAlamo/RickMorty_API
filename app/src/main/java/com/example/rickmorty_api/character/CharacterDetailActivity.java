@@ -5,9 +5,12 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -24,6 +27,8 @@ public class CharacterDetailActivity extends AppCompatActivity {
 
     private SQLiteDatabase database;
     private boolean isFavorite;
+
+    private ImageButton btnShare;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,6 +51,31 @@ public class CharacterDetailActivity extends AppCompatActivity {
             String htmlData = generateCharacterDetailsHTML(character);
             detailWebView.loadDataWithBaseURL(null, htmlData, "text/html", "UTF-8", null);
         }
+
+        btnShare = findViewById(R.id.btnShare);
+        btnShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                shareCharacter();
+            }
+        });
+    }
+
+    private void shareCharacter() {
+        String characterName = character.getName();
+        String characterDetail = "Name: " + characterName +
+                "\nStatus: " + character.getStatus() +
+                "\nSpecies: " + character.getSpecies() +
+                "\nGender: " + character.getGender() +
+                "\nType: " + character.getType() +
+                "\nLocation: " + character.getLocation().getName() +
+                "\nOrigin: " + character.getOrigin().getName();
+
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, characterDetail);
+
+        startActivity(Intent.createChooser(shareIntent, "Compartir Personaje"));
     }
 
     public void addToFavorites(View view) {
@@ -89,10 +119,6 @@ public class CharacterDetailActivity extends AppCompatActivity {
         cursor.close();
         return count > 0;
     }
-
-
-
-
 
 
 
