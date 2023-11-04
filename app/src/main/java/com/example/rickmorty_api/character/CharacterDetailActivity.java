@@ -33,6 +33,7 @@ public class CharacterDetailActivity extends AppCompatActivity {
 
     private String generateCharacterDetailsHTML(Character character) {
         String htmlData = "<html><body>";
+        htmlData += "<div style='text-align: center;'>";
         htmlData += "<h1>" + character.getName() + "</h1>";
         htmlData += "<img src='" + character.getImage() + "' />";
         htmlData += "<p><strong>Status:</strong> " + character.getStatus() + "</p>";
@@ -40,15 +41,9 @@ public class CharacterDetailActivity extends AppCompatActivity {
         htmlData += "<p><strong>Gender:</strong> " + character.getGender() + "</p>";
         htmlData += "<p><strong>Type:</strong> " + character.getType() + "</p>";
         htmlData += "<p><strong>Location:</strong> " + character.getLocation().getName() + "</p>";
-
-        // Lista de episodios, suponiendo que Episode tiene un método getName()
-        // Si tienes los nombres de episodios, puedes reemplazar la URL con esos nombres.
-        htmlData += "<p><strong>Episodes:</strong></p><ul>";
-    /*for (String episodeUrl : character.getEpisode()) {
-        htmlData += "<li>" + episodeUrl + "</li>"; // Deberías cambiar esto por los nombres de los episodios si están disponibles
-    }*/
-        htmlData += "</ul>";
-        htmlData += "</body></html>";
+        htmlData += "<p><strong>Origin:</strong> " + character.getOrigin().getName() + "</p>";
+        htmlData += "<p><strong>Episodes:</strong></p><ul>" + character.getEpisode().get(0);
+        htmlData += "</div>";
         return htmlData;
     }
 

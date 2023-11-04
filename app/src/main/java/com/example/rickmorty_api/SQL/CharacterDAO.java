@@ -26,22 +26,17 @@ public class CharacterDAO {
         ContentValues values = new ContentValues();
         values.put(CharacterDatabaseHelper.COLUMN_NAME, name);
 
-        return database.insert(CharacterDatabaseHelper.TABLE_NAME, null, values);
+        return database.insert(CharacterDatabaseHelper.TABLE_FAVORITE_CHARACTERS, null, values);
     }
 
     public void removeFavoriteCharacter(long characterId) {
-        database.delete(CharacterDatabaseHelper.TABLE_NAME,
+        database.delete(CharacterDatabaseHelper.TABLE_FAVORITE_CHARACTERS,
                 CharacterDatabaseHelper.COLUMN_ID + " = " + characterId, null);
     }
 
     public Cursor getFavoriteCharacters() {
         String[] allColumns = {CharacterDatabaseHelper.COLUMN_ID, CharacterDatabaseHelper.COLUMN_NAME};
-        Cursor cursor = database.query(CharacterDatabaseHelper.TABLE_NAME, allColumns,
+        return database.query(CharacterDatabaseHelper.TABLE_FAVORITE_CHARACTERS, allColumns,
                 null, null, null, null, null);
-        if (cursor != null) {
-            cursor.moveToFirst();
-        }
-        return cursor;
     }
 }
-

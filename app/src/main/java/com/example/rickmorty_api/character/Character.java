@@ -7,6 +7,7 @@ import java.util.List;
 
 public class Character implements Serializable {
     private Location location;
+    private Origin origin;
 
     private List<String> episode;
 
@@ -68,5 +69,9 @@ public class Character implements Serializable {
 
     public String getGender() {
         return gender;
+    }
+
+    public Origin getOrigin() {
+        return origin;
     }
 }
