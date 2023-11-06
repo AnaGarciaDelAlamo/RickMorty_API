@@ -1,15 +1,19 @@
 package com.example.rickmorty_api;
 
-
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.app.AppCompatDelegate;
 import com.example.rickmorty_api.character.Character;
 import com.example.rickmorty_api.character.CharacterAdapter;
 import java.util.ArrayList;
@@ -26,8 +30,11 @@ public class MainActivity extends AppCompatActivity {
     private CharacterAdapter characterAdapter;
     private List<Character> characterList;
     private Spinner spinner;
+    private Switch darkModeSwitch;
 
+    private SharedPreferences sharedPreferences;
 
+    @SuppressLint({"WrongViewCast", "MissingInflatedId"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,26 +48,46 @@ public class MainActivity extends AppCompatActivity {
 
         // Spinner
         spinner = findViewById(R.id.spinnerCategory);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(characterAdapter);
-
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.species_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
-        spinner.setSelection(adapter.getPosition("Ninguno"));
+        // Preferencias de usuario
+        sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+
+        // Inicializar vistas y configuración del modo claro/oscuro
+        darkModeSwitch = (Switch) findViewById(R.id.darkModeSwitch);
+
+        darkModeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            setDarkMode(isChecked);
+        });
+
+        // Restaurar el estado del modo oscuro
+        boolean isDarkMode = sharedPreferences.getBoolean("darkMode", false);
+        setDarkMode(isDarkMode);
+
+        // Recuperar la última categoría seleccionada
+        String lastSelectedSpecies = sharedPreferences.getString("selectedSpecies", "Ninguno");
+        spinner.setSelection(adapter.getPosition(lastSelectedSpecies));
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 String selectedSpecies = spinner.getSelectedItem().toString();
                 filterCharactersBySpecies(selectedSpecies);
+
+                // Guardar la selección en SharedPreferences
+                sharedPreferences.edit().putString("selectedSpecies", selectedSpecies).apply();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
                 spinner.setSelection(adapter.getPosition("Ninguno"));
+
+                // Guardar la selección en SharedPreferences
+                sharedPreferences.edit().putString("selectedSpecies", "Ninguno").apply();
+
             }
         });
 
@@ -103,5 +130,17 @@ public class MainActivity extends AppCompatActivity {
         }
 
         characterAdapter.setCharacters(filteredCharacters);
+    }
+
+    private void setDarkMode(boolean isDarkMode) {
+        if (isDarkMode) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            darkModeSwitch.setText("Modo Oscuro");
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            darkModeSwitch.setText("Modo Claro");
+        }
+
+        sharedPreferences.edit().putBoolean("darkMode", isDarkMode).apply();
     }
 }

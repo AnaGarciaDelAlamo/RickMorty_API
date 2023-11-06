@@ -25,31 +25,37 @@
         android:layout_marginStart="96dp"
         android:layout_marginTop="24dp"
         android:onClick="addToFavorites"
-        android:scaleType="center"
+        android:scaleType="fitCenter"
         android:src="@drawable/favorito"
+        android:background="#FFFFFF"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/webview"
         tools:ignore="MissingConstraints" />
+
 
     <Button
         android:id="@+id/btnShowFavorites"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="132dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="28dp"
         android:onClick="showFavorites"
         android:text="Show Favorites"
+        android:textColor="@color/black"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <ImageButton
         android:id="@+id/btnShare"
-        android:layout_width="93dp"
-        android:layout_height="87dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_gravity="end"
         android:layout_marginStart="72dp"
         android:layout_marginTop="24dp"
+        android:scaleType="fitCenter"
         android:contentDescription="Compartir"
+        android:background="#FFFFFF"
         android:src="@drawable/compartir"
         app:layout_constraintStart_toEndOf="@+id/btnAddToFavorites"
         app:layout_constraintTop_toBottomOf="@+id/webview"

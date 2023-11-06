@@ -5,17 +5,13 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageButton;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.rickmorty_api.R;
 import com.example.rickmorty_api.SQL.CharacterDatabaseHelper;
 import com.example.rickmorty_api.SQL.FavoritesActivity;
@@ -41,7 +37,7 @@ public class CharacterDetailActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("character")) {
-            character = (Character) intent.getSerializableExtra("character"); // Asignar el objeto Character a la variable character
+            character = (Character) intent.getSerializableExtra("character");
 
             // Verificar si el personaje ya es un favorito
             CharacterDatabaseHelper dbHelper = new CharacterDatabaseHelper(this);
@@ -61,6 +57,7 @@ public class CharacterDetailActivity extends AppCompatActivity {
         });
     }
 
+
     private void shareCharacter() {
         String characterName = character.getName();
         String characterDetail = "Name: " + characterName +
@@ -71,12 +68,18 @@ public class CharacterDetailActivity extends AppCompatActivity {
                 "\nLocation: " + character.getLocation().getName() +
                 "\nOrigin: " + character.getOrigin().getName();
 
+        String imageUrl = character.getImage();
+        String shareMessage = characterDetail + "\nImage URL: " + imageUrl;
+
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
-        shareIntent.putExtra(Intent.EXTRA_TEXT, characterDetail);
+
+        shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
 
         startActivity(Intent.createChooser(shareIntent, "Compartir Personaje"));
     }
+
+
 
     public void addToFavorites(View view) {
         if (isFavorite) {
@@ -120,8 +123,6 @@ public class CharacterDetailActivity extends AppCompatActivity {
         return count > 0;
     }
 
-
-
     //Elementos webView
     private String generateCharacterDetailsHTML(Character character) {
         String htmlData = "<html><body>";
@@ -135,11 +136,9 @@ public class CharacterDetailActivity extends AppCompatActivity {
         htmlData += "<p><strong>Location:</strong> " + character.getLocation().getName() + "</p>";
         htmlData += "<p><strong>Origin:</strong> " + character.getOrigin().getName() + "</p>";
 
-        // Verifica si la lista de episodios tiene al menos un episodio
+
         if (character.getEpisode() != null && !character.getEpisode().isEmpty()) {
-            // Obtiene la URL del primer episodio
             String firstEpisodeUrl = character.getEpisode().get(0);
-            // Extrae el nombre del episodio de la URL
             String firstEpisodeName = extractEpisodeNameFromUrl(firstEpisodeUrl);
             htmlData += "<p><strong>First Episode:</strong> " + firstEpisodeName + "</p>";
         }
@@ -150,8 +149,6 @@ public class CharacterDetailActivity extends AppCompatActivity {
 
     // Función para extraer el nombre del episodio desde su URL
     private String extractEpisodeNameFromUrl(String episodeUrl) {
-        // Supongamos que la URL tiene el formato "https://rickandmortyapi.com/api/episode/1"
-        // Puedes extraer el número de episodio del final de la URL y asignar un nombre en función de ese número
         String[] parts = episodeUrl.split("/");
         if (parts.length > 0) {
             String episodeNumber = parts[parts.length - 1];
@@ -159,8 +156,6 @@ public class CharacterDetailActivity extends AppCompatActivity {
         }
         return "Unknown Episode";
     }
-
-
 
     public void showFavorites(View view) {
         Intent intent = new Intent(this, FavoritesActivity.class);
