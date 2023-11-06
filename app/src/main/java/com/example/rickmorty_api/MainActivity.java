@@ -68,8 +68,8 @@ public class MainActivity extends AppCompatActivity {
         setDarkMode(isDarkMode);
 
         // Recuperar la última categoría seleccionada
-        String lastSelectedSpecies = sharedPreferences.getString("selectedSpecies", "Ninguno");
-        spinner.setSelection(adapter.getPosition(lastSelectedSpecies));
+       // String lastSelectedSpecies = sharedPreferences.getString("selectedSpecies", "Ninguno");
+        //spinner.setSelection(adapter.getPosition(lastSelectedSpecies));
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
                 filterCharactersBySpecies(selectedSpecies);
 
                 // Guardar la selección en SharedPreferences
-                sharedPreferences.edit().putString("selectedSpecies", selectedSpecies).apply();
+                //sharedPreferences.edit().putString("selectedSpecies", selectedSpecies).apply();
             }
 
             @Override
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
                 spinner.setSelection(adapter.getPosition("Ninguno"));
 
                 // Guardar la selección en SharedPreferences
-                sharedPreferences.edit().putString("selectedSpecies", "Ninguno").apply();
+                //sharedPreferences.edit().putString("selectedSpecies", "Ninguno").apply();
 
             }
         });
@@ -142,5 +142,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         sharedPreferences.edit().putBoolean("darkMode", isDarkMode).apply();
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.species_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
     }
 }
